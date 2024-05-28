@@ -16,23 +16,10 @@ class TestController
     public function index($section = null)
     {
 
-        $request = resolve(NovaRequest::class);
-
         $sections = NovaProfile::getSections();
         $sections = NovaProfile::keyByUri();
 
         $activeSection = $sections->get($section) ?? $sections->first();
-
-        $fields = FieldCollection::make($activeSection->fields());
-
-        $curentSettings = $activeSection->getSettings($request);
-
-        $fields = $fields->each(function ($field) use ($activeSection, $curentSettings) {
-            $field->panel = $activeSection->label();
-            $field->resolve($this->makeFakeResource($field->attribute, $curentSettings[$field->attribute] ?? ''));
-        });
-
-        $panel = new Panel($activeSection->label());
 
         $menu = $sections->map(function ($sec) {
             $object = new $sec;
@@ -44,8 +31,6 @@ class TestController
         });
 
         return inertia('Test', [
-            'fields' => $fields->map(fn ($f) => $f->jsonSerialize())->toArray(),
-            'panel' => $panel->jsonSerialize(),
             'menus' => $menu->values()->toArray(),
             'section' => $activeSection->uriKey(),
         ]);
@@ -69,5 +54,31 @@ class TestController
         $request->validate($page->getValidationRules($request));
 
         return $page->store($request);
+    }
+
+    public function getSectionData($section = null)
+    {
+        $request = resolve(NovaRequest::class);
+
+        $sections = NovaProfile::getSections();
+        $sections = NovaProfile::keyByUri();
+
+        $activeSection = $sections->get($section) ?? $sections->first();
+
+        $fields = FieldCollection::make($activeSection->fields());
+
+        $currentSettings = $activeSection->getSettings($request);
+
+        $fields = $fields->each(function ($field) use ($currentSettings) {
+            // $field->panel = $activeSection->label();
+            $field->resolve($this->makeFakeResource($field->attribute, $currentSettings[$field->attribute] ?? ''));
+        });
+
+        $panel = new Panel($activeSection->label());
+
+        return response()->json([
+            'fields' => $fields->map(fn ($f) => $f->jsonSerialize())->toArray(),
+            'panel' => $panel->jsonSerialize(),
+        ]);
     }
 }

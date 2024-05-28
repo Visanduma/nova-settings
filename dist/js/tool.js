@@ -20,13 +20,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__.HandlesFormRequest, laravel_nova__WEBPACK_IMPORTED_MODULE_0__.HandlesUploads],
-  props: ["panel", "fields", "menus", "section"],
+  props: ["menus", "section"],
   data: function data() {
     return {
       pageId: this.section,
       validationErrors: new laravel_nova__WEBPACK_IMPORTED_MODULE_0__.Errors(),
-      formFields: this.fields
+      panel: null,
+      fields: [],
+      loading: true,
+      saving: false
     };
+  },
+  mounted: function mounted() {
+    this.loadFields();
   },
   methods: {
     save: function save() {
@@ -37,7 +43,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               formData = new FormData();
-              _this.formFields.forEach(function (field) {
+              _this.fields.forEach(function (field) {
                 return field.fill(formData);
               });
               _context.prev = 2;
@@ -65,6 +71,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[2, 9]]);
       }))();
+    },
+    loadFields: function loadFields() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var response;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _this2.loading = true;
+              _context2.next = 3;
+              return Nova.request().get("/nova-vendor/nova-profile/section/".concat(_this2.section));
+            case 3:
+              response = _context2.sent;
+              _this2.fields = response.data.fields;
+              _this2.panel = response.data.panel;
+              _this2.loading = false;
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
     }
   },
   computed: {
@@ -73,7 +101,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         name: this.panel.name,
         component: this.panel.component,
         helpText: this.panel.helpText,
-        fields: this.formFields,
+        fields: this.fields,
         showTitle: this.panel.showTitle
       };
     }
@@ -105,28 +133,29 @@ var _hoisted_2 = {
 var _hoisted_3 = {
   "class": "w-full"
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Save");
+var _hoisted_4 = ["data-form-unique-id"];
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Save");
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_menu_section = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("menu-section");
   var _component_default_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("default-button");
   var _component_LoadingView = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LoadingView");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_LoadingView, {
-    loading: false,
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.menus, function (menu, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+      key: index,
+      "class": "mb-2"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_menu_section, {
+      item: menu
+    }, null, 8 /* PROPS */, ["item"])]);
+  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_LoadingView, {
+    loading: $data.loading,
     key: $data.pageId
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.menus, function (menu, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
-          key: index,
-          "class": "mb-2"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_menu_section, {
-          item: menu
-        }, null, 8 /* PROPS */, ["item"])]);
-      }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formData) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
         onSubmit: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.save && $options.save.apply($options, arguments);
         }, ["prevent"])),
-        "data-form-unique-id": "adv"
+        "data-form-unique-id": $props.section
       }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("form-" + $options.panelMapped.component), {
         panel: $options.panelMapped,
         mode: "form",
@@ -135,15 +164,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "resource-id": $data.pageId,
         fields: $options.panelMapped.fields,
         "validation-errors": $data.validationErrors
-      }, null, 8 /* PROPS */, ["panel", "resource-id", "fields", "validation-errors"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_default_button, null, {
+      }, null, 8 /* PROPS */, ["panel", "resource-id", "fields", "validation-errors"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_default_button, {
+        disabled: $data.saving
+      }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [_hoisted_4];
+          return [_hoisted_5];
         }),
         _: 1 /* STABLE */
-      })], 32 /* HYDRATE_EVENTS */)])])];
+      }, 8 /* PROPS */, ["disabled"])], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_4)];
     }),
     _: 1 /* STABLE */
-  });
+  }, 8 /* PROPS */, ["loading"])])]);
 }
 
 /***/ }),
