@@ -11,13 +11,14 @@
       <LoadingView :loading="loading" :key="pageId">
         <form @submit.prevent="save" :data-form-unique-id="section">
           <component
-            :is="`form-` + panelMapped.component"
-            :panel="panelMapped"
+            v-for="panel in panels"
+            :is="`form-` + panel.component"
+            :panel="panel"
             mode="form"
             class="mb-6"
             :resource-name="'nova-advance-settings'"
             :resource-id="pageId"
-            :fields="panelMapped.fields"
+            :fields="panel.fields"
             :validation-errors="validationErrors"
           />
           <default-button :disabled="saving">Save</default-button>
@@ -38,6 +39,7 @@ export default {
       pageId: this.section,
       validationErrors: new Errors(),
       panel: null,
+      panels: [],
       fields: [],
       loading: true,
       saving: false,
@@ -50,7 +52,11 @@ export default {
   methods: {
     async save() {
       const formData = new FormData();
-      this.fields.forEach((field) => field.fill(formData));
+
+      this.panels.forEach((panel) => {
+        panel.fields.forEach((field) => field.fill(formData));
+      });
+      //   this.fields.forEach((field) => field.fill(formData));
 
       try {
         let response = await Nova.request().post(`${this.section}`, formData);
@@ -75,22 +81,11 @@ export default {
         `/nova-vendor/nova-profile/section/${this.section}`
       );
 
-      this.fields = response.data.fields;
-      this.panel = response.data.panel;
+      this.panels = response.data.panels;
       this.loading = false;
     },
   },
 
-  computed: {
-    panelMapped() {
-      return {
-        name: this.panel.name,
-        component: this.panel.component,
-        helpText: this.panel.helpText,
-        fields: this.fields,
-        showTitle: this.panel.showTitle,
-      };
-    },
-  },
+  computed: {},
 };
 </script>

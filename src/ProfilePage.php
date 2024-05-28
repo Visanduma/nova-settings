@@ -30,12 +30,25 @@ abstract class ProfilePage
 
     public function getValidationRules(NovaRequest $request): array
     {
-        return collect($this->fields())
+
+        return $this->getAllFieldsWithoutPanel()
             ->reduce(function (array $all, $field) use ($request) {
 
                 return [...$all, ...$field->getRules($request)];
 
             }, []);
+    }
+
+    private function getAllFieldsWithoutPanel(): Collection
+    {
+        return collect($this->fields())
+            ->map(function ($field) {
+                if ($field->component == 'panel') {
+                    return $field->data;
+                }
+
+                return $field;
+            })->flatten(1);
     }
 
     public function store(NovaRequest $request)

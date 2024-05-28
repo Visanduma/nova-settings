@@ -69,16 +69,37 @@ class TestController
 
         $currentSettings = $activeSection->getSettings($request);
 
-        $fields = $fields->each(function ($field) use ($currentSettings) {
-            // $field->panel = $activeSection->label();
-            $field->resolve($this->makeFakeResource($field->attribute, $currentSettings[$field->attribute] ?? ''));
-        });
+        $fieldsWithNoPanel = $fields->filter(fn ($el) => $el->component != 'panel');
 
-        $panel = new Panel($activeSection->label());
+        $panels = $fields->filter(fn ($el) => $el->component == 'panel');
+
+        if ($fieldsWithNoPanel->isNotEmpty()) {
+            $defaultPanel = new Panel($activeSection->label(), $fieldsWithNoPanel);
+            $panels = $panels->prepend($defaultPanel);
+        }
+
+        $panels
+            ->transform(fn ($panel) => $this->panelJsonSerializeWithFields($panel, $currentSettings))
+            ->toArray();
 
         return response()->json([
-            'fields' => $fields->map(fn ($f) => $f->jsonSerialize())->toArray(),
-            'panel' => $panel->jsonSerialize(),
+            'panels' => $panels,
         ]);
+    }
+
+    private function panelJsonSerializeWithFields(Panel $panel, $values)
+    {
+        return array_merge($panel->jsonSerialize(), [
+            'fields' => $this->resolvePanel($panel, $values),
+        ]);
+    }
+
+    private function resolvePanel(Panel $panel, $values)
+    {
+        return collect($panel->data)
+            ->each(function ($field) use ($values) {
+                $field->resolve($this->makeFakeResource($field->attribute, $values[$field->attribute] ?? ''));
+            })
+            ->toArray();
     }
 }

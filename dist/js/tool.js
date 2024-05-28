@@ -26,6 +26,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       pageId: this.section,
       validationErrors: new laravel_nova__WEBPACK_IMPORTED_MODULE_0__.Errors(),
       panel: null,
+      panels: [],
       fields: [],
       loading: true,
       saving: false
@@ -43,9 +44,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) switch (_context.prev = _context.next) {
             case 0:
               formData = new FormData();
-              _this.fields.forEach(function (field) {
-                return field.fill(formData);
+              _this.panels.forEach(function (panel) {
+                panel.fields.forEach(function (field) {
+                  return field.fill(formData);
+                });
               });
+              //   this.fields.forEach((field) => field.fill(formData));
               _context.prev = 2;
               _context.next = 5;
               return Nova.request().post("".concat(_this.section), formData);
@@ -84,10 +88,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return Nova.request().get("/nova-vendor/nova-profile/section/".concat(_this2.section));
             case 3:
               response = _context2.sent;
-              _this2.fields = response.data.fields;
-              _this2.panel = response.data.panel;
+              _this2.panels = response.data.panels;
               _this2.loading = false;
-            case 7:
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -95,17 +98,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     }
   },
-  computed: {
-    panelMapped: function panelMapped() {
-      return {
-        name: this.panel.name,
-        component: this.panel.component,
-        helpText: this.panel.helpText,
-        fields: this.fields,
-        showTitle: this.panel.showTitle
-      };
-    }
-  }
+  computed: {}
 });
 
 /***/ }),
@@ -156,15 +149,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return $options.save && $options.save.apply($options, arguments);
         }, ["prevent"])),
         "data-form-unique-id": $props.section
-      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("form-" + $options.panelMapped.component), {
-        panel: $options.panelMapped,
-        mode: "form",
-        "class": "mb-6",
-        "resource-name": 'nova-advance-settings',
-        "resource-id": $data.pageId,
-        fields: $options.panelMapped.fields,
-        "validation-errors": $data.validationErrors
-      }, null, 8 /* PROPS */, ["panel", "resource-id", "fields", "validation-errors"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_default_button, {
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.panels, function (panel) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)("form-" + panel.component), {
+          panel: panel,
+          mode: "form",
+          "class": "mb-6",
+          "resource-name": 'nova-advance-settings',
+          "resource-id": $data.pageId,
+          fields: panel.fields,
+          "validation-errors": $data.validationErrors
+        }, null, 8 /* PROPS */, ["panel", "resource-id", "fields", "validation-errors"]);
+      }), 256 /* UNKEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_default_button, {
         disabled: $data.saving
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
