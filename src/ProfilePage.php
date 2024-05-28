@@ -71,6 +71,9 @@ abstract class ProfilePage
             return $this->saveUserSettings($data, $request);
         }
 
+        // call after hooks
+        $this->afterSaved($request);
+
         return response('', 422);
     }
 
@@ -79,7 +82,7 @@ abstract class ProfilePage
         return $inputs;
     }
 
-    protected function saveUserSettings(Collection $data, NovaRequest $request)
+    private function saveUserSettings(Collection $data, NovaRequest $request)
     {
         $data->each(function ($value, $key) use ($request) {
             $request->user()->advanceSettings()->updateOrCreate(
@@ -94,7 +97,7 @@ abstract class ProfilePage
         return response('', 204);
     }
 
-    protected function saveGlobalSettings(Collection $data, NovaRequest $request)
+    private function saveGlobalSettings(Collection $data, NovaRequest $request)
     {
         $data->each(function ($value, $key) {
             NovaAdvanceSettingsModel::updateOrCreate(
@@ -116,5 +119,10 @@ abstract class ProfilePage
         } else {
             return $request->user()->getAdvanceSettingsBySection($this->uriKey());
         }
+    }
+
+    protected function afterSaved(NovaRequest $request)
+    {
+        // called after saved the form
     }
 }
