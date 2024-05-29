@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "Visanduma\\NovaProfile\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "extra": {
         "laravel": {
