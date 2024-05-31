@@ -5,6 +5,7 @@ namespace Visanduma\NovaProfile\Http\Controllers;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\MenuSection;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Panel;
 use Laravel\Nova\ResolvesFields;
 use Visanduma\NovaProfile\NovaProfile;
@@ -16,8 +17,12 @@ class TestController
     public function index($section = null)
     {
 
-        $sections = NovaProfile::getSections();
+        // $sections = NovaProfile::getSections();
         $sections = NovaProfile::keyByUri();
+
+        if (! $section) {
+            return redirect()->to(Nova::url('/nova-profile/'.$sections->first()->uriKey()));
+        }
 
         $activeSection = $sections->get($section) ?? $sections->first();
 

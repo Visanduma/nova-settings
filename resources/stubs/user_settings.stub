@@ -1,0 +1,19 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Visanduma\NovaProfile\ProfilePage;
+
+class $CLASS_NAME$ extends ProfilePage
+{
+    public $icon = 'cog';
+
+    public function fields()
+    {
+        return [
+            Text::make('Name')->rules('required'),
+        ];
+    }
+}
