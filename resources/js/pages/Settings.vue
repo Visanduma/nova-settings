@@ -29,10 +29,26 @@
 </template>
 
 <script>
-import { Errors, HandlesFormRequest, HandlesUploads } from "laravel-nova";
+import {
+  Errors,
+  HandlesFieldAttachments,
+  HandlesFormRequest,
+  HandlesUploads,
+  HandlesValidationErrors,
+  PreventsFormAbandonment,
+  mapProps,
+} from "laravel-nova";
 
 export default {
-  mixins: [HandlesFormRequest, HandlesUploads],
+  mixins: [
+    HandlesValidationErrors,
+    HandlesFormRequest,
+    HandlesUploads,
+    HandlesValidationErrors,
+    PreventsFormAbandonment,
+    HandlesFieldAttachments,
+    mapProps,
+  ],
   props: ["menus", "section"],
   data() {
     return {
@@ -56,7 +72,6 @@ export default {
       this.panels.forEach((panel) => {
         panel.fields.forEach((field) => field.fill(formData));
       });
-      //   this.fields.forEach((field) => field.fill(formData));
 
       try {
         let response = await Nova.request().post(`${this.section}`, formData);
