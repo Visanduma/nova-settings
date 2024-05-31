@@ -10,15 +10,18 @@ use Laravel\Nova\Panel;
 use Laravel\Nova\ResolvesFields;
 use Visanduma\NovaProfile\NovaProfile;
 
-class TestController
+class SettingsController
 {
     use ResolvesFields;
 
     public function index($section = null)
     {
 
-        // $sections = NovaProfile::getSections();
         $sections = NovaProfile::keyByUri();
+
+        if ($sections->isEmpty()) {
+            return inertia('Empty');
+        }
 
         if (! $section) {
             return redirect()->to(Nova::url('/nova-profile/'.$sections->first()->uriKey()));
@@ -35,7 +38,7 @@ class TestController
                 ->jsonSerialize();
         });
 
-        return inertia('Test', [
+        return inertia('Settings', [
             'menus' => $menu->values()->toArray(),
             'section' => $activeSection->uriKey(),
         ]);

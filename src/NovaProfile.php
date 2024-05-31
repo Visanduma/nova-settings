@@ -32,9 +32,9 @@ class NovaProfile extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Nova Profile')
+        return MenuSection::make('Settings')
             ->path('/nova-profile')
-            ->icon('server');
+            ->icon('cog');
     }
 
     public static function register(array $sections)

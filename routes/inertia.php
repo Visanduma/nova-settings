@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Visanduma\NovaProfile\Http\Controllers\TestController;
+use Visanduma\NovaProfile\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +14,5 @@ use Visanduma\NovaProfile\Http\Controllers\TestController;
 |
 */
 
-Route::get('/{section?}', [TestController::class, 'index']);
-Route::post('/{section?}', [TestController::class, 'store']);
+Route::get('/{section?}', [SettingsController::class, 'index']);
+Route::post('/{section?}', [SettingsController::class, 'store']);

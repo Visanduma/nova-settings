@@ -23,7 +23,7 @@ class ToolServiceProvider extends ServiceProvider
         });
 
         $this->commands([
-            CreateSettings::class,
+            Visanduma\NovaProfile\CreateSettings::class,
         ]);
 
          $this->publishes([
