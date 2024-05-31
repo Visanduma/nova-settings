@@ -4,6 +4,7 @@ namespace Visanduma\NovaProfile\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Stringable;
 
 class CreateSettings extends Command
 {
@@ -41,9 +42,9 @@ class CreateSettings extends Command
 
         if (! $this->files->exists($path)) {
             $this->files->put($path, $contents);
-            $this->info("File : {$path} created");
+            $this->info("Settings : {$path} created");
         } else {
-            $this->info("File : {$path} already exits");
+            $this->info("Settings : {$path} already exits");
         }
 
         return Command::SUCCESS;
@@ -71,9 +72,12 @@ class CreateSettings extends Command
 
     public function getStubVariables()
     {
+        $namespace = str($this->argument('name'))
+            ->whenContains('/', fn (Stringable $string) => $string->beforeLast('/')->prepend('\\'), fn () => '');
+
         return [
-            'NAMESPACE' => 'App\\NovaSettings',
-            'CLASS_NAME' => $this->argument('name'),
+            'NAMESPACE' => 'App\\Nova\\Settings'.$namespace,
+            'CLASS_NAME' => str($this->argument('name'))->afterLast('/')->ucfirst(),
         ];
     }
 
