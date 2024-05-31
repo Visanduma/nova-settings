@@ -4,9 +4,9 @@ namespace Visanduma\NovaProfile;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
+use Visanduma\NovaProfile\Console\Commands\CreateSettings;
 use Visanduma\NovaProfile\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
@@ -22,9 +22,16 @@ class ToolServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        Nova::serving(function (ServingNova $event) {
-            //
-        });
+        $this->commands([
+            CreateSettings::class,
+        ]);
+
+         $this->publishes([
+                __DIR__ . '/nonfig.php' => config_path('nonfig.php'),
+            ], 'nonfig.config');
+
+        NovaProfile::autoRegister();
+
     }
 
     /**
@@ -53,6 +60,7 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(__DIR__.'/nonfig.php', 'nonfig');
+
     }
 }
