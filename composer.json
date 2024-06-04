@@ -1,9 +1,12 @@
 {
-    "name": "visanduma/nova-profile",
-    "description": "A Laravel Nova tool.",
+    "name": "visanduma/nova-settings",
+    "description": "Advance settings UI for Laravel Nova",
     "keywords": [
         "laravel",
-        "nova"
+        "nova",
+        "settings",
+        "preference",
+        "configuration"
     ],
     "license": "MIT",
     "require": {
@@ -11,7 +14,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Visanduma\\NovaProfile\\": "src/"
+            "Visanduma\\NovaSettings\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -20,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Visanduma\\NovaProfile\\ToolServiceProvider"
+                "Visanduma\\NovaSettings\\ToolServiceProvider"
             ]
         }
     },

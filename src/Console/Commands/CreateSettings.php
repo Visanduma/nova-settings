@@ -1,6 +1,6 @@
 <?php
 
-namespace Visanduma\NovaProfile\Console\Commands;
+namespace Visanduma\NovaSettings\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -13,7 +13,7 @@ class CreateSettings extends Command
      *
      * @var string
      */
-    protected $signature = 'nonfig:create {name}';
+    protected $signature = 'nova-settings:create {name}';
 
     /**
      * The console command description.

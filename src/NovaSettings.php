@@ -1,6 +1,6 @@
 <?php
 
-namespace Visanduma\NovaProfile;
+namespace Visanduma\NovaSettings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -10,7 +10,7 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Symfony\Component\Finder\Finder;
 
-class NovaProfile extends Tool
+class NovaSettings extends Tool
 {
     private static array $sections = [];
 
@@ -21,8 +21,8 @@ class NovaProfile extends Tool
      */
     public function boot()
     {
-        Nova::script('nova-profile', __DIR__.'/../dist/js/tool.js');
-        Nova::style('nova-profile', __DIR__.'/../dist/css/tool.css');
+        Nova::script('nova-settings', __DIR__.'/../dist/js/tool.js');
+        Nova::style('nova-settings', __DIR__.'/../dist/css/tool.css');
     }
 
     /**
@@ -33,7 +33,7 @@ class NovaProfile extends Tool
     public function menu(Request $request)
     {
         return MenuSection::make('Settings')
-            ->path('/nova-profile')
+            ->path('/nova-settings')
             ->icon('cog');
     }
 
@@ -46,7 +46,7 @@ class NovaProfile extends Tool
     {
         $namespace = app()->getNamespace();
 
-        $directory = config('nonfig.settings_path');
+        $directory = config('nova-settings.settings_path');
 
         $resources = [];
 

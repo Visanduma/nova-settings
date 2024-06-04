@@ -1,6 +1,6 @@
 <?php
 
-namespace Visanduma\NovaProfile\Http\Controllers;
+namespace Visanduma\NovaSettings\Http\Controllers;
 
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -8,7 +8,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Panel;
 use Laravel\Nova\ResolvesFields;
-use Visanduma\NovaProfile\NovaProfile;
+use Visanduma\NovaSettings\NovaSettings;
 
 class SettingsController
 {
@@ -17,14 +17,14 @@ class SettingsController
     public function index($section = null)
     {
 
-        $sections = NovaProfile::keyByUri();
+        $sections = NovaSettings::keyByUri();
 
         if ($sections->isEmpty()) {
             return inertia('Empty');
         }
 
         if (! $section) {
-            return redirect()->to(Nova::url('/nova-profile/'.$sections->first()->uriKey()));
+            return redirect()->to(Nova::url('/nova-settings/'.$sections->first()->uriKey()));
         }
 
         $activeSection = $sections->get($section) ?? $sections->first();
@@ -33,12 +33,12 @@ class SettingsController
             $object = new $sec;
 
             return MenuSection::make($object->label())
-                ->path('/nova-profile/'.$object->uriKey())
+                ->path('/nova-settings/'.$object->uriKey())
                 ->icon($object->icon)
                 ->jsonSerialize();
         });
 
-        return inertia('Settings', [
+        return inertia('NovaSettings', [
             'menus' => $menu->values()->toArray(),
             'section' => $activeSection->uriKey(),
         ]);
@@ -55,9 +55,7 @@ class SettingsController
 
     public function store($section, NovaRequest $request)
     {
-        // nofig('system.address');
-
-        $page = NovaProfile::findSection($section);
+        $page = NovaSettings::findSection($section);
 
         $request->validate($page->getValidationRules($request));
 
@@ -68,8 +66,8 @@ class SettingsController
     {
         $request = resolve(NovaRequest::class);
 
-        $sections = NovaProfile::getSections();
-        $sections = NovaProfile::keyByUri();
+        $sections = NovaSettings::getSections();
+        $sections = NovaSettings::keyByUri();
 
         $activeSection = $sections->get($section) ?? $sections->first();
 

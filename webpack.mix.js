@@ -8,7 +8,7 @@ mix
     .js('resources/js/tool.js', 'js')
     .vue({ version: 3 })
     .css('resources/css/tool.css', 'css')
-    .nova('visanduma/nova-profile')
+    .nova('visanduma/nova-settings')
     .alias({
         'laravel-nova': path.join(__dirname, '../../vendor/laravel/nova/resources/js/mixins/'),
     });

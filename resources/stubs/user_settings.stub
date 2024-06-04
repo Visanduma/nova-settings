@@ -4,9 +4,9 @@ namespace $NAMESPACE$;
 
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Visanduma\NovaProfile\ProfilePage;
+use Visanduma\NovaSettings\NovaSettingsMum;
 
-class $CLASS_NAME$ extends ProfilePage
+class $CLASS_NAME$ extends NovaSettingsMum
 {
     public $icon = 'cog';
 

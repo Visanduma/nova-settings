@@ -1,18 +1,18 @@
 <?php
 
-use Visanduma\NovaProfile\Models\NovaAdvanceSettingsModel;
+use Visanduma\NovaSettings\Models\NovaSettingsModel;
 
-if (! function_exists('nonfig')) {
-    function nonfig($key, $default = null)
+if (! function_exists('nova_settings')) {
+    function nova_settings($key, $default = null)
     {
-        return NovaAdvanceSettingsModel::findByKey($key) ?? $default;
+        return NovaSettingsModel::findByKey($key) ?? $default;
     }
 }
 
-if (! function_exists('nonfig_global')) {
-    function nonfig_global($key, $default = null)
+if (! function_exists('nova_settings_global')) {
+    function nova_settings_global($key, $default = null)
     {
-        $value = NovaAdvanceSettingsModel::getGlobalSettings($key);
+        $value = NovaSettingsModel::getGlobalSettings($key);
 
         return ! empty($value) ? $value : $default;
     }

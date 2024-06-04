@@ -1,6 +1,7 @@
 <template>
   <div class="flex justify-content-start gap-4">
     <div class="w-1/5">
+      {{ menu }}
       <ul>
         <li v-for="(menu, index) in menus" :key="index" class="mb-2">
           <menu-section :item="menu" />
@@ -31,9 +32,7 @@
 <script>
 import {
   Errors,
-  HandlesFieldAttachments,
   HandlesFormRequest,
-  HandlesUploads,
   HandlesValidationErrors,
   PreventsFormAbandonment,
   mapProps,
@@ -43,10 +42,9 @@ export default {
   mixins: [
     HandlesValidationErrors,
     HandlesFormRequest,
-    HandlesUploads,
     HandlesValidationErrors,
     PreventsFormAbandonment,
-    HandlesFieldAttachments,
+
     mapProps,
   ],
   props: ["menus", "section"],
@@ -93,7 +91,7 @@ export default {
     async loadFields() {
       this.loading = true;
       let response = await Nova.request().get(
-        `/nova-vendor/nova-profile/section/${this.section}`
+        `/nova-vendor/nova-settings/section/${this.section}`
       );
 
       this.panels = response.data.panels;

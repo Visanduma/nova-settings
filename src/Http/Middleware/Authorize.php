@@ -1,9 +1,9 @@
 <?php
 
-namespace Visanduma\NovaProfile\Http\Middleware;
+namespace Visanduma\NovaSettings\Http\Middleware;
 
 use Laravel\Nova\Nova;
-use Visanduma\NovaProfile\NovaProfile;
+use Visanduma\NovaSettings\NovaSettings;
 
 class Authorize
 {
@@ -29,6 +29,6 @@ class Authorize
      */
     public function matchesTool($tool)
     {
-        return $tool instanceof NovaProfile;
+        return $tool instanceof NovaSettings;
     }
 }

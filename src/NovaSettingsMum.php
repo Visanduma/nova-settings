@@ -1,12 +1,12 @@
 <?php
 
-namespace Visanduma\NovaProfile;
+namespace Visanduma\NovaSettings;
 
 use Illuminate\Support\Collection;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Visanduma\NovaProfile\Models\NovaAdvanceSettingsModel;
+use Visanduma\NovaSettings\Models\NovaSettingsModel;
 
-abstract class ProfilePage
+abstract class NovaSettingsMum
 {
     protected bool $global = false;
 
@@ -100,7 +100,7 @@ abstract class ProfilePage
     private function saveGlobalSettings(Collection $data, NovaRequest $request)
     {
         $data->each(function ($value, $key) {
-            NovaAdvanceSettingsModel::updateOrCreate(
+            NovaSettingsModel::updateOrCreate(
                 [
                     'key' => $key,
                 ], [
@@ -115,7 +115,7 @@ abstract class ProfilePage
     public function getSettings(NovaRequest $request)
     {
         if ($this->global) {
-            return NovaAdvanceSettingsModel::getGlobalSettings($this->uriKey());
+            return NovaSettingsModel::getGlobalSettings($this->uriKey());
         } else {
             return $request->user()->getAdvanceSettingsBySection($this->uriKey());
         }

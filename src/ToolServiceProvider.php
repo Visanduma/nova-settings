@@ -1,13 +1,13 @@
 <?php
 
-namespace Visanduma\NovaProfile;
+namespace Visanduma\NovaSettings;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
-use Visanduma\NovaProfile\Console\Commands\CreateSettings;
-use Visanduma\NovaProfile\Http\Middleware\Authorize;
+use Visanduma\NovaSettings\Console\Commands\CreateSettings;
+use Visanduma\NovaSettings\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {
@@ -23,14 +23,14 @@ class ToolServiceProvider extends ServiceProvider
         });
 
         $this->commands([
-            Visanduma\NovaProfile\CreateSettings::class,
+            CreateSettings::class,
         ]);
 
-         $this->publishes([
-                __DIR__ . '/nonfig.php' => config_path('nonfig.php'),
-            ], 'nonfig.config');
+        $this->publishes([
+            __DIR__.'/nova-settings.php' => config_path('nova-settings.php'),
+        ], 'nova-settings.config');
 
-        NovaProfile::autoRegister();
+        NovaSettings::autoRegister();
 
     }
 
@@ -45,11 +45,11 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-profile')
+        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-settings')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
-            ->prefix('nova-vendor/nova-profile')
+            ->prefix('nova-vendor/nova-settings')
             ->group(__DIR__.'/../routes/api.php');
     }
 
@@ -60,7 +60,7 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/nonfig.php', 'nonfig');
+        $this->mergeConfigFrom(__DIR__.'/nova-settings.php', 'nova-settings');
 
     }
 }

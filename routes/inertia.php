@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Visanduma\NovaProfile\Http\Controllers\SettingsController;
+use Visanduma\NovaSettings\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------

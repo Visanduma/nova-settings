@@ -1,14 +1,14 @@
 <?php
 
-namespace Visanduma\NovaProfile;
+namespace Visanduma\NovaSettings;
 
-use Visanduma\NovaProfile\Models\NovaAdvanceSettingsModel;
+use Visanduma\NovaSettings\Models\NovaSettingsModel;
 
-trait AdvanceNovaSettings
+trait HasNovaSettings
 {
     public function advanceSettings()
     {
-        return $this->morphMany(NovaAdvanceSettingsModel::class, 'owner');
+        return $this->morphMany(NovaSettingsModel::class, 'owner');
     }
 
     public function getAdvanceSettings($key)

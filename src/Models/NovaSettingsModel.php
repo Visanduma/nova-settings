@@ -1,11 +1,11 @@
 <?php
 
-namespace Visanduma\NovaProfile\Models;
+namespace Visanduma\NovaSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class NovaAdvanceSettingsModel extends Model
+class NovaSettingsModel extends Model
 {
     protected $table = 'advance_nova_settings';
 
