@@ -58,7 +58,7 @@ class NovaSettings extends Tool
             );
 
             if (
-                is_subclass_of($resource, ProfilePage::class)
+                is_subclass_of($resource, NovaSettingsMum::class)
             ) {
                 $resources[] = $resource;
             }
@@ -82,7 +82,7 @@ class NovaSettings extends Tool
             ->mapWithKeys(fn ($el) => [(new $el)->uriKey() => (new $el)]);
     }
 
-    public static function findSection($name): ProfilePage
+    public static function findSection($name): NovaSettingsMum
     {
         return static::keyByUri()[$name] ?? null;
     }
