@@ -6,19 +6,19 @@ use Visanduma\NovaSettings\Models\NovaSettingsModel;
 
 trait HasNovaSettings
 {
-    public function advanceSettings()
+    public function novaSettings()
     {
         return $this->morphMany(NovaSettingsModel::class, 'owner');
     }
 
-    public function getAdvanceSettings($key)
+    public function getNovaSettings($key)
     {
-        return $this->advanceSettings()->where('key', $key)->first()?->value;
+        return $this->novaSettings()->where('key', $key)->first()?->value;
     }
 
-    public function getAdvanceSettingsBySection($section)
+    public function getNovaSettingsBySection($section)
     {
-        return $this->advanceSettings()
+        return $this->novaSettings()
             ->where('key', 'LIKE', "$section.%")
             ->get()
             ->map(function ($el) {

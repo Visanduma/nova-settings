@@ -1,18 +1,18 @@
 <?php
 
-use Visanduma\NovaSettings\Models\NovaSettingsModel;
+use Visanduma\NovaSettings\NovaSettings;
 
 if (! function_exists('nova_settings')) {
     function nova_settings($key, $default = null)
     {
-        return NovaSettingsModel::findByKey($key) ?? $default;
+        return NovaSettings::get($key, $default);
     }
 }
 
 if (! function_exists('nova_settings_global')) {
     function nova_settings_global($key, $default = null)
     {
-        $value = NovaSettingsModel::getGlobalSettings($key);
+        $value = NovaSettings::global($key, $default);
 
         return ! empty($value) ? $value : $default;
     }

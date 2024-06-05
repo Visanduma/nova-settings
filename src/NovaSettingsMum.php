@@ -85,7 +85,7 @@ abstract class NovaSettingsMum
     private function saveUserSettings(Collection $data, NovaRequest $request)
     {
         $data->each(function ($value, $key) use ($request) {
-            $request->user()->advanceSettings()->updateOrCreate(
+            $request->user()->novaSettings()->updateOrCreate(
                 [
                     'key' => $key,
                 ], [
@@ -115,9 +115,9 @@ abstract class NovaSettingsMum
     public function getSettings(NovaRequest $request)
     {
         if ($this->global) {
-            return NovaSettingsModel::getGlobalSettings($this->uriKey());
+            return NovaSettings::global($this->uriKey());
         } else {
-            return $request->user()->getAdvanceSettingsBySection($this->uriKey());
+            return $request->user()->getNovaSettingsBySection($this->uriKey());
         }
     }
 
