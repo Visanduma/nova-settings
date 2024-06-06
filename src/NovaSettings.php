@@ -34,7 +34,7 @@ class NovaSettings extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Settings')
+        return MenuSection::make(__('Settings'))
             ->path('/nova-settings')
             ->icon('cog');
     }
