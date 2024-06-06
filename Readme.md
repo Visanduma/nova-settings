@@ -44,3 +44,5 @@ global
 ### Hooks
 
 ### Todo
+- Authorization
+- Caching
