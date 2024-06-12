@@ -15,18 +15,4 @@ trait HasNovaSettings
     {
         return $this->novaSettings()->where('key', $key)->first()?->value;
     }
-
-    public function getNovaSettingsBySection($section)
-    {
-        return $this->novaSettings()
-            ->where('key', 'LIKE', "$section.%")
-            ->get()
-            ->map(function ($el) {
-                $el['key'] = str($el->key)->after('.')->toString();
-
-                return $el;
-            })
-            ->pluck('value', 'key')
-            ->toArray();
-    }
 }

@@ -2,6 +2,8 @@
 
 namespace Visanduma\NovaSettings\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\MenuSection;
@@ -66,12 +68,14 @@ class SettingsController
     {
         $request = resolve(NovaRequest::class);
 
-        $sections = NovaSettings::getSections();
         $sections = NovaSettings::keyByUri();
 
         $activeSection = $sections->get($section) ?? $sections->first();
 
         $fields = FieldCollection::make($activeSection->fields());
+
+        // fields modifications
+        $fields->map(fn ($field) => $this->setFieldHandlers($field));
 
         $currentSettings = $activeSection->getSettings($request);
 
@@ -91,6 +95,17 @@ class SettingsController
         return response()->json([
             'panels' => $panels,
         ]);
+    }
+
+    private function setFieldHandlers(Field|Panel $field)
+    {
+
+        if ($field->component() == 'file-field') {
+            // set default thumbnail path
+            $field->thumbnail(fn ($value, $disk) => Storage::disk($disk)->url($value));
+        }
+
+        return $field;
     }
 
     private function panelJsonSerializeWithFields(Panel $panel, $values)
