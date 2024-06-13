@@ -2,6 +2,7 @@
 
 namespace Visanduma\NovaSettings;
 
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +19,7 @@ abstract class NovaSettingsMum
         return [];
     }
 
-    public function label()
+    public function label():string
     {
         return str(get_called_class())
             ->afterLast('\\')
@@ -54,7 +55,7 @@ abstract class NovaSettingsMum
             })->flatten(1);
     }
 
-    public function store(NovaRequest $request)
+    public function store(NovaRequest $request): Response
     {
 
         $data = $this->transformInputs($request->all());
