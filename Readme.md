@@ -214,6 +214,19 @@ protected function afterSaved(NovaRequest $request)
 
 ### Todo
 
-- Authorization
-- Caching
-- Events
+- [ ] Authorization
+- [ ] Caching
+- [ ] Events
+
+
+## Credits
+
+-   [Visanduma](https://github.com/Visanduma)
+-   [LaHiRu](https://github.com/lahirulhr)
+-   [All Contributors](../../contributors)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+
