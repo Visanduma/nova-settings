@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="https://github.com/Visanduma/nova-two-factor/blob/c26d41cb38c5850e7ee3863e34e5fd3b0c3f18a5/resources/img/nova-two-factor-banner.png?raw=true" />
+<img src="https://github.com/Visanduma/nova-settings/blob/file-uploading/cover.png?raw=true" />
 
 </p>
 
