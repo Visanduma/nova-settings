@@ -9,6 +9,9 @@
 
 Settings management UI for Laravel Nova™ dashboard using **Native fields**
 
+
+![screenshot1](./sc1.png)
+
 <br>
 
 ### 💠 Install
