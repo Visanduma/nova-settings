@@ -1,7 +1,6 @@
 <template>
   <div class="flex justify-content-start gap-4">
     <div class="w-1/5">
-      {{ menu }}
       <ul>
         <li v-for="(menu, index) in menus" :key="index" class="mb-2">
           <menu-section :item="menu" />

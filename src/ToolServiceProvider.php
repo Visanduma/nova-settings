@@ -28,7 +28,8 @@ class ToolServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/nova-settings.php' => config_path('nova-settings.php'),
-        ], 'nova-settings.config');
+            __DIR__.'/../database/create_advance_nova_settings_table.php' => database_path('/migrations/'.'2024_06_13_000000_create_advance_nova_settings_table.php'),
+        ], 'nova-settings');
 
         NovaSettings::autoRegister();
 

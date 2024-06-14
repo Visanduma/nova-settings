@@ -2,7 +2,11 @@
 
 namespace Visanduma\NovaSettings;
 
+use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Visanduma\NovaSettings\Models\NovaSettingsModel;
 
@@ -15,7 +19,7 @@ abstract class NovaSettingsMum
         return [];
     }
 
-    public function label()
+    public function label():string
     {
         return str(get_called_class())
             ->afterLast('\\')
@@ -51,10 +55,20 @@ abstract class NovaSettingsMum
             })->flatten(1);
     }
 
-    public function store(NovaRequest $request)
+    public function store(NovaRequest $request): Response
     {
 
         $data = $this->transformInputs($request->all());
+
+        // store files if exists
+        $files = $request->allFiles();
+        $filePaths = [];
+
+        foreach ($files as $index => $file) {
+            $filePaths[$index] = $this->uploadFile($file, $this->findField($index));
+        }
+
+        $data = array_merge($data, $filePaths);
 
         // prepare data with section prefix
         $data = collect($data)->mapWithKeys(function ($value, $key) {
@@ -117,12 +131,48 @@ abstract class NovaSettingsMum
         if ($this->global) {
             return NovaSettings::global($this->uriKey());
         } else {
-            return $request->user()->getNovaSettingsBySection($this->uriKey());
+            return $this->getUserSettings($request->user());
         }
+    }
+
+    public function getUserSettings($user)
+    {
+        return $user->novaSettings()
+            ->where('key', 'LIKE', "{$this->uriKey()}.%")
+            ->get()
+            ->map(function ($el) {
+                $key = str($el->key)->after('.')->toString();
+                $field = $this->findField($key);
+
+                // set file url value
+                if ($field?->component == 'file-field') {
+                    // $el['value'] = Storage::disk($field->getStorageDisk())->url($el->value);
+                }
+
+                $el['key'] = $key;
+
+                return $el;
+            })
+            ->pluck('value', 'key')
+            ->toArray();
     }
 
     protected function afterSaved(NovaRequest $request)
     {
         // called after saved the form
+    }
+
+    private function uploadFile(UploadedFile $file, File $field)
+    {
+        return $file->store($field->getStoragePath(), [
+            'disk' => $field->getStorageDisk(),
+        ]);
+    }
+
+    private function findField($name)
+    {
+        return $this->getAllFieldsWithoutPanel()
+            ->where('attribute', $name)
+            ->first();
     }
 }
