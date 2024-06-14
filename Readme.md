@@ -1,26 +1,33 @@
-### Nova Settings
+<p align="center">
 
-A settings management UI for Laravel Nova ™ dashboard using **Native fields**
+<img src="https://github.com/Visanduma/nova-two-factor/blob/c26d41cb38c5850e7ee3863e34e5fd3b0c3f18a5/resources/img/nova-two-factor-banner.png?raw=true" />
 
-### Install
+</p>
+
+
+# ⚙ Nova Settings
+
+Settings management UI for Laravel Nova™ dashboard using **Native fields**
+
+### 💠 Install
 
 `composer require visanduma/nova-settings`
 
-### Configuration
+### 💠 Configuration
 
-publish config & migrations
+Publish config & migrations
 
 ```
 php artisan vendor:publish --tag=nova-settings
 ```
 
-run migration
+Run migration
 
 ```
 php artisan migrate
 ```
 
-update config file (optional)
+Update config file (optional)
 
 ```php
 
@@ -46,9 +53,9 @@ class User extends Authenticatable
 
 ```
 
-### Create your first setting class
+### 💠 Create your first setting class
 
-You can use `nova-settings:create` command to build fresh settings class
+You can use `nova-settings:create` command to build a fresh settings class
 
 ```
 
@@ -56,7 +63,7 @@ php artisan nova-settings:create Contact
 
 ```
 
-add fields like in Nova Resource
+Adding fields is the same as in Nova Resource
 
 ```php
 class Contact extends NovaSettingsMum
@@ -65,8 +72,9 @@ class Contact extends NovaSettingsMum
 
     public $icon = 'phone';
 
+
     public function fields()
-    
+
     {
 
         return [
@@ -99,11 +107,11 @@ class Contact extends NovaSettingsMum
 
 ```
 
-### Registering settings
+### 💠 Registering settings
 
-All settings class in default path is automatically registered. if you are going to use different path please configure it on `nova-settings.php`
+All settings class in the default path are automatically registered. If you are going to use a different path, please configure it in `nova-settings.php`
 
-If you want to register settings class manually use `NovaSettings::register` method in service provider
+If you want to register settings class manually, use `NovaSettings::register` method in the service provider
 
 ```php
 namespace App\Nova\Settings;
@@ -117,21 +125,21 @@ public function boot()
 }
 ```
 
-### Customizing settings section
+### 💠 Customizing the settings class
 
-You can customize settings class as per our needs
+You can customize settings class as per your needs
 
-customizing settings menu icon. you can use any [Heroicons](https://v1.heroicons.com/)
+Customizing settings menu icon. you can use any [Heroicons](https://v1.heroicons.com/)
 
 ```php
 public $icon = 'bell';
 ```
 
-customizing section label
+Customizing section label
 
 ```php
  public function label():string
- 
+
  {
 
     return 'User contacts';
@@ -139,56 +147,58 @@ customizing section label
  }
 ```
 
-customizing uriKey. ```uriKey``` is used when saving/retrieving the settings
+Customizing uriKey. `uriKey` is used when saving/retrieving the settings
 
 ```php
  public function uriKey(): string
- 
+
  {
     return 'user-contacts';
  }
 ```
 
-### User settings vs Global settings
+### 💠 User settings vs Global settings
 
 There are two type of settings. **User settings** & **Global Settings**.
-User settings is always bind to an entity (Generally for User Model) while global settings does not bind to any entity
+User settings is always bound to an entity (Generally for User Model) while global settings are not bound to any entity
 
-you can easily configure the settings type with ```global``` property in settings class
+You can easily configure the settings type with `global` property in the settings class
 
 ```php
     protected bool $global = false;
 ```
 
-### Retrieving the settings
-
-retrieve user settings
+### 💠 Retrieving the settings
 
 ```php
 use Visanduma\NovaSettings\NovaSettings;
 
 // getting single value
 NovaSettings::get('contact.name', 'default value');
+
 nova_settings('contact.name','default value');
 
 // getting whole settings array
 NovaSettings::get('contact');
+
 nova_settings('contact');
 
 
 // getting global settings
 NovaSettings::global('system.email');
+
 NovaSettings::global('system');
+
 nova_settings_global('system.phone'),
 ```
 
-### Transforming inputs
+### 💠 Transforming inputs
 
-If you need to customize user submitted form data, override following method in settings class. this method will receive form data array as it's argument
+If you need to customize user-submitted form data, override the following method in the settings class. This method will receive form data array as its argument
 
 ```php
 protected function transformInputs(array $inputs): array
-    
+
 {
     // do your modifications
 
@@ -196,19 +206,19 @@ protected function transformInputs(array $inputs): array
 }
 ```
 
-
-### Hooks
+### 💠 Hooks
 
 ```php
 protected function afterSaved(NovaRequest $request)
 
 {
-        // called after saved the form
+        // this method will be called after the form is saved
 }
 ```
 
 ### Known issues
 
+- File inputs does not work correctly
 - Uploaded files cannot be delete
 - Not works well with 3rd party fields
 
@@ -218,15 +228,12 @@ protected function afterSaved(NovaRequest $request)
 - [ ] Caching
 - [ ] Events
 
-
 ## Credits
 
--   [Visanduma](https://github.com/Visanduma)
--   [LaHiRu](https://github.com/lahirulhr)
--   [All Contributors](../../contributors)
+- [Visanduma](https://github.com/Visanduma)
+- [LaHiRu](https://github.com/lahirulhr)
+- [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-
