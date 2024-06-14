@@ -1,8 +1,8 @@
-<p align="center">
+<!-- <p align="center">
 
 <img src="https://github.com/Visanduma/nova-settings/blob/file-uploading/cover.png?raw=true" />
 
-</p>
+</p> -->
 
 
 # ⚙ Nova Settings
