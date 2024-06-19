@@ -5,6 +5,7 @@ namespace Visanduma\NovaSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -49,6 +50,10 @@ class NovaSettings extends Tool
         $namespace = app()->getNamespace();
 
         $directory = config('nova-settings.settings_path');
+
+        if (! File::exists($directory)) {
+            return;
+        }
 
         $resources = [];
 

@@ -13,7 +13,7 @@ class CreateSettings extends Command
      *
      * @var string
      */
-    protected $signature = 'nova-settings:create {name}';
+    protected $signature = 'nova-settings:make {name}';
 
     /**
      * The console command description.

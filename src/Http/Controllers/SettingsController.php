@@ -2,6 +2,7 @@
 
 namespace Visanduma\NovaSettings\Http\Controllers;
 
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\FieldCollection;
@@ -118,8 +119,13 @@ class SettingsController
     private function resolvePanel(Panel $panel, $values)
     {
         return collect($panel->data)
-            ->each(function ($field) use ($values) {
-                $field->resolve($this->makeFakeResource($field->attribute, $values[$field->attribute] ?? ''));
+            ->each(function (Field $field) use ($values) {
+                $value = $values[$field->attribute] ?? '';
+
+                if ($field->component == 'date-field') {
+                    $value = Date::parse($value);
+                }
+                $field->resolve($this->makeFakeResource($field->attribute, $value));
             })
             ->toArray();
     }
