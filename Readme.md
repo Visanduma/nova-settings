@@ -66,7 +66,7 @@ Register tool in Nova Service Provider
 public function tools()
 {
         return [
-            \\other tools
+            /* other tools */
             \Visanduma\NovaSettings\NovaSettings::make(),
 
         ];
