@@ -4,11 +4,9 @@
 
 </p> -->
 
-
 # ⚙ Nova Settings
 
 Settings management UI for Laravel Nova™ dashboard using **Native fields**
-
 
 ![screenshot1](./sc1.png)
 
@@ -19,6 +17,7 @@ Settings management UI for Laravel Nova™ dashboard using **Native fields**
 ```bash
 composer require visanduma/nova-settings
 ```
+
 <br>
 
 ### 💠 Configuration
@@ -60,15 +59,30 @@ class User extends Authenticatable
 }
 
 ```
+
+Register tool in Nova Service Provider
+
+```php
+public function tools()
+{
+        return [
+            \\other tools
+            \Visanduma\NovaSettings\NovaSettings::make(),
+
+        ];
+}
+
+```
+
 <br>
 
 ### 💠 Create your first setting class
 
-You can use `nova-settings:create` command to build a fresh settings class
+You can use `nova-settings:make` command to build a fresh settings class
 
 ```
 
-php artisan nova-settings:create Contact
+php artisan nova-settings:make Contact
 
 ```
 
@@ -115,6 +129,7 @@ class Contact extends NovaSettingsMum
 }
 
 ```
+
 <br>
 
 ### 💠 Registering settings
@@ -134,6 +149,7 @@ public function boot()
         ]);
 }
 ```
+
 <br>
 
 ### 💠 Customizing the settings class
@@ -167,6 +183,7 @@ Customizing uriKey. `uriKey` is used when saving/retrieving the settings
     return 'user-contacts';
  }
 ```
+
 <br>
 
 ### 💠 User settings vs Global settings
@@ -179,6 +196,7 @@ You can easily configure the settings type with `global` property in the setting
 ```php
     protected bool $global = false;
 ```
+
 <br>
 
 ### 💠 Retrieving the settings
@@ -204,6 +222,7 @@ NovaSettings::global('system');
 
 nova_settings_global('system.phone'),
 ```
+
 <br>
 
 ### 💠 Transforming inputs
@@ -219,6 +238,7 @@ protected function transformInputs(array $inputs): array
     return $inputs;
 }
 ```
+
 <br>
 
 ### 💠 Hooks
@@ -230,6 +250,7 @@ protected function afterSaved(NovaRequest $request)
         // this method will be called after the form is saved
 }
 ```
+
 <br>
 
 ### Known issues
