@@ -120,10 +120,10 @@ class SettingsController
     {
         return collect($panel->data)
             ->each(function (Field $field) use ($values) {
-                $value = $values[$field->attribute] ?? '';
+                $value = $values[$field->attribute] ?? null;
 
                 if ($field->component == 'date-field') {
-                    $value = Date::parse($value);
+                    $value = $value ? Date::parse($value) : null;
                 }
                 $field->resolve($this->makeFakeResource($field->attribute, $value));
             })
