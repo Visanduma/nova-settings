@@ -10,7 +10,7 @@ class $CLASS_NAME$ extends NovaSettingsMum
 {
     public $icon = 'cog';
 
-    public function fields()
+    public function fields():array
     {
         return [
             Text::make('Name')->rules('required'),
