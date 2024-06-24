@@ -186,15 +186,24 @@ Customizing uriKey. `uriKey` is used when saving/retrieving the settings
 
 <br>
 
-### 💠 User settings vs Global settings
+### 💠 Model settings vs Global settings
 
-There are two type of settings. **User settings** & **Global Settings**.
-User settings is always bound to an entity (Generally for User Model) while global settings are not bound to any entity
+There are two type of settings. **Model settings** & **Global Settings**.
+Model settings is always bound to an entity (Auth user by default) while global settings are not bound to any entity
 
 You can easily configure the settings type with `global` property in the settings class
 
 ```php
     protected bool $global = false;
+```
+
+if you want use another Model rather than User Model , just override the `getModel()` method on settings class
+
+```php
+protected function getModel()
+{
+    return Auth::user(); // default model is Auth User
+}
 ```
 
 <br>
@@ -213,6 +222,11 @@ nova_settings('contact.name','default value');
 NovaSettings::get('contact');
 
 nova_settings('contact');
+
+// use different Model instead Auth User
+NovaSettings::get('contact.name', 'default value', Admin::find(3));
+
+nova_settings('contact.name','default value', Admin::find(3));
 
 
 // getting global settings

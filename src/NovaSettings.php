@@ -94,14 +94,21 @@ class NovaSettings extends Tool
         return static::keyByUri()[$name] ?? null;
     }
 
-    public static function get($key, $default = null)
+    public static function get($key, $default = null, $model = null)
     {
+        $model = $model ?? Auth::user();
+
+        throw_unless(
+            in_array(HasNovaSettings::class, class_uses_recursive($model)),
+            'Model should be use HasNovaSettings trait'
+        );
+
         $key = str($key)->trim('.');
 
         if ($key->contains('.')) {
-            return Auth::user()->novaSettings()->where('key', $key)->first()?->value ?? $default;
+            return $model->novaSettings()->where('key', $key)->first()?->value ?? $default;
         } else {
-            $results = Auth::user()->novaSettings()->where('key', 'LIKE', "$key.%")
+            $results = $model->novaSettings()->where('key', 'LIKE', "$key.%")
                 ->get()
                 ->map(function ($el) {
                     $el['key'] = str($el->key)->after('.')->toString();

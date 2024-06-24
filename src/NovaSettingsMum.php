@@ -5,7 +5,7 @@ namespace Visanduma\NovaSettings;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Visanduma\NovaSettings\Models\NovaSettingsModel;
@@ -14,12 +14,12 @@ abstract class NovaSettingsMum
 {
     protected bool $global = false;
 
-    public function fields()
+    public function fields(): array
     {
         return [];
     }
 
-    public function label():string
+    public function label(): string
     {
         return str(get_called_class())
             ->afterLast('\\')
@@ -81,8 +81,8 @@ abstract class NovaSettingsMum
             // save global settings
             return $this->saveGlobalSettings($data, $request);
         } else {
-            // save settings for current auth user
-            return $this->saveUserSettings($data, $request);
+            // save settings for model
+            return $this->saveModelSettings($data, $request);
         }
 
         // call after hooks
@@ -96,16 +96,31 @@ abstract class NovaSettingsMum
         return $inputs;
     }
 
-    private function saveUserSettings(Collection $data, NovaRequest $request)
+    /**
+     * @return Illuminate\Contracts\Auth\Authenticatable | Illuminate\Database\Eloquent\Model
+     */
+    protected function getModel()
     {
-        $data->each(function ($value, $key) use ($request) {
-            $request->user()->novaSettings()->updateOrCreate(
-                [
-                    'key' => $key,
-                ], [
-                    'value' => $value,
-                ]
-            );
+        return Auth::user();
+    }
+
+    private function saveModelSettings(Collection $data, NovaRequest $request)
+    {
+        throw_unless(
+            in_array(HasNovaSettings::class, class_uses_recursive($this->getModel())),
+            'Model should be use HasNovaSettings trait'
+        );
+
+        $data->each(function ($value, $key) {
+            $this->getModel()
+                ->novaSettings()
+                ->updateOrCreate(
+                    [
+                        'key' => $key,
+                    ], [
+                        'value' => $value,
+                    ]
+                );
         });
 
         return response('', 204);
@@ -131,13 +146,18 @@ abstract class NovaSettingsMum
         if ($this->global) {
             return NovaSettings::global($this->uriKey());
         } else {
-            return $this->getUserSettings($request->user());
+            return $this->getModelSettings($this->getModel());
         }
     }
 
-    public function getUserSettings($user)
+    public function getModelSettings($model)
     {
-        return $user->novaSettings()
+        throw_unless(
+            in_array(HasNovaSettings::class, class_uses_recursive($this->getModel())),
+            'Model should be use HasNovaSettings trait'
+        );
+
+        return $model->novaSettings()
             ->where('key', 'LIKE', "{$this->uriKey()}.%")
             ->get()
             ->map(function ($el) {
